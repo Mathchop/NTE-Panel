@@ -1,5 +1,5 @@
 local RunService = game:GetService("RunService")
-local SOURCE_BASE = "https://raw.githubusercontent.com/Mathchop/nte/refs/heads/test/src"
+local SOURCE_BASE = "https://raw.githubusercontent.com/Mathchop/NTE-Panel/refs/heads/test/src/"
 
 if not RunService:IsStudio() then
 	local cache = {}
