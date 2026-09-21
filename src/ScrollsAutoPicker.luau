@@ -138,7 +138,6 @@ function ScrollsAutoPicker.start()
 	print("STARTING SCROLLS AUTO PICKER")
 	task.spawn(function()
 		while task.wait(0.1) do
-			print("LOOP")
 			if next(ScrollsAutoPicker._scrollsBlacklist) then
 				for i = #ScrollsAutoPicker._scrollsBlacklist, 1, -1 do
 					local child = ScrollsAutoPicker._scrollsBlacklist[i]
