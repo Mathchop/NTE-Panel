@@ -17,13 +17,11 @@ if not RunService:IsStudio() then
 	local known = {}
 
 	local function gitRequire(path)
-		print(1)
 		local dir = ""
 		local caller = (debug.info(2, "s") or ""):gsub("^[@=]", "")
 		if known[caller] then
 			dir = caller:match("^(.*)/[^/]*$") or ""
 		end
-		print(2)
 
 		local parts = {}
 		if path:sub(1, 2) == "./" or path:sub(1, 3) == "../" then
@@ -42,7 +40,7 @@ if not RunService:IsStudio() then
 				table.insert(parts, seg)
 			end
 		end
-		print(3)
+
 		local key = (table.concat(parts, "/"):gsub("%.luau$", ""))
 
 		if cache[key] ~= nil then
@@ -52,10 +50,10 @@ if not RunService:IsStudio() then
 			error("Dépendance circulaire sur '" .. key .. "'")
 		end
 		loading[key] = true
-		print(4)
+		
 		local finalPath = GIT_BASE .. key .. ".luau"
 		print("REQUIRING LUAU OF PATH: "..finalPath)
-		print(5)
+
 		local source = fetch(finalPath)
 		local fn, err = loadstring(source, "@" .. key)
 		if not fn then
