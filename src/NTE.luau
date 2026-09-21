@@ -1,5 +1,5 @@
 local UserInputService = game:GetService("UserInputService")
-local NTEConfig = require("./NTEConfig")
+local NTEConfig = _G.gitRequire("./NTEConfig")
 
 local UIPanel = _G.gitRequire("./UIPanel")
 local ScrollsAutoPicker = _G.gitRequire("./ScrollsAutoPicker")
