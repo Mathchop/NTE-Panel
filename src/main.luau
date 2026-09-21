@@ -58,5 +58,6 @@ if not RunService:IsStudio() then
 	end
 end
 
+print("STARTING NTE PANEL!!!!")
 local NTE = require("./NTE")
 NTE.start()
