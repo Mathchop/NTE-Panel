@@ -1,5 +1,5 @@
 local RunService = game:GetService("RunService")
-local GIT_BASE = "https://raw.githubusercontent.com/Mathchop/nte/refs/heads/main/"
+local GIT_BASE = "https://raw.githubusercontent.com/Mathchop/nte/refs/heads/test/src"
 
 if not RunService:IsStudio() then
 	local cache = {}
