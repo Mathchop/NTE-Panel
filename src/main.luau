@@ -49,8 +49,11 @@ if not RunService:IsStudio() then
 			error("Dépendance circulaire sur '" .. key .. "'")
 		end
 		loading[key] = true
+		
+		local finalPath = GIT_BASE .. key .. ".luau"
+		print("REQUIRING LUAU OF PATH: "..finalPath)
 
-		local source = fetch(GIT_BASE .. key .. ".luau")
+		local source = fetch(finalPath)
 		local fn, err = loadstring(source, "@" .. key)
 		if not fn then
 			loading[key] = nil
