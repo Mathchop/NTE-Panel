@@ -1,5 +1,5 @@
 local RunService = game:GetService("RunService")
-local GIT_BASE = "https://raw.githubusercontent.com/Mathchop/nte/refs/heads/main/"
+local SOURCE_BASE = "https://raw.githubusercontent.com/Mathchop/NTE-Panel/refs/heads/test/src/"
 
 if not RunService:IsStudio() then
 	print("NOT STUDIO")
@@ -51,7 +51,7 @@ if not RunService:IsStudio() then
 		end
 		loading[key] = true
 		
-		local finalPath = GIT_BASE .. key .. ".luau?t=" .. os.time()
+		local finalPath = SOURCE_BASE .. key .. ".luau?t=" .. os.time()
 		print("REQUIRING LUAU OF PATH: "..finalPath)
 
 		local source = fetch(finalPath)
