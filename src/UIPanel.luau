@@ -35,6 +35,8 @@ local function updateSideInfos()
 			local newText = Instance.new("TextLabel")
 			newText.Name = "M_"..id
 			newText.Size = UDim2.fromScale(1, 0.1)
+			newText.TextColor3 = Color3.new(1, 1, 1)
+			newText.BackgroundTransparency = 1
 			newText.TextScaled = true
 			newText.Parent = UIPanel.SideInfosFrame
 			
@@ -72,7 +74,7 @@ function UIPanel.init()
 	
 	UIPanel.ScreenGui = newPanel
 	
-	local sideInfo = newFrame("SideInfos", UDim2.new(0.18, 0, 0.4, 0), UDim2.fromScale(1, 0), Vector2.new(1, 0), false)
+	local sideInfo = newFrame("SideInfos", UDim2.new(0.18, 0, 0.4, 0), UDim2.fromScale(1, 0), Vector2.new(1, 0), true)
 	sideInfo.Parent = UIPanel.ScreenGui
 	
 	local uiList = Instance.new("UIListLayout", sideInfo)
@@ -80,8 +82,6 @@ function UIPanel.init()
 	UIPanel.SideInfosFrame = sideInfo
 	
 	UIPanel.setSideInfo("version", "Docteur Panel 1.0.0")
-	UIPanel.setSideInfo("test", "TEST")
-	UIPanel.setSideInfo("test", "TEST2")
 end
 
 return UIPanel
