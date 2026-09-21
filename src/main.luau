@@ -1,5 +1,5 @@
 local RunService = game:GetService("RunService")
-local GIT_BASE = "https://raw.githubusercontent.com/Mathchop/nte/refs/heads/test/src"
+local SOURCE_BASE = "https://raw.githubusercontent.com/Mathchop/nte/refs/heads/test/src"
 
 if not RunService:IsStudio() then
 	local cache = {}
@@ -36,7 +36,7 @@ if not RunService:IsStudio() then
 		end
 		loading[key] = true
 
-		local source = game:HttpGet(GIT_BASE .. key .. ".luau")
+		local source = game:HttpGet(SOURCE_BASE .. key .. ".luau")
 		local fn, err = loadstring(source, "@" .. key)
 		if not fn then
 			loading[key] = nil
