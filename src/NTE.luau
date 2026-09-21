@@ -1,8 +1,8 @@
 local UserInputService = game:GetService("UserInputService")
 local NTEConfig = require("./NTEConfig")
 
-local UIPanel = gitRequire("./UIPanel")
-local ScrollsAutoPicker = gitRequire("./ScrollsAutoPicker")
+local UIPanel = _G.gitRequire("./UIPanel")
+local ScrollsAutoPicker = _G.gitRequire("./ScrollsAutoPicker")
 
 local HACKS_TOGGLE_KEY = Enum.KeyCode.T
 

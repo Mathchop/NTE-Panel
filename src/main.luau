@@ -56,7 +56,9 @@ if not RunService:IsStudio() then
 		loading[key] = nil
 		return result
 	end
+	
+	_G.gitRequire = gitRequire
 end
 
-local NTE = gitRequire("./NTE")
+local NTE = _G.gitRequire("./NTE")
 NTE.start()

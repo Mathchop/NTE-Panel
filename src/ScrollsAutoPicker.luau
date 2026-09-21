@@ -1,6 +1,6 @@
 local UserInputService = game:GetService("UserInputService")
 local RunService = game:GetService("RunService")
-local NTEConfig = gitRequire("./NTEConfig")
+local NTEConfig = _G.gitRequire("./NTEConfig")
 
 local player = game:GetService("Players").LocalPlayer
 local camera = workspace.Camera
