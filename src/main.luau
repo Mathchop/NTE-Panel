@@ -1,5 +1,5 @@
 local RunService = game:GetService("RunService")
-local SOURCE_BASE = "https://raw.githubusercontent.com/Mathchop/NTE-Panel/refs/heads/test/src/"
+local GIT_BASE = "https://raw.githubusercontent.com/Mathchop/nte/refs/heads/main/"
 
 if not RunService:IsStudio() then
 	local cache = {}
@@ -36,7 +36,7 @@ if not RunService:IsStudio() then
 		end
 		loading[key] = true
 
-		local source = game:HttpGet(SOURCE_BASE .. key .. ".luau")
+		local source = game:HttpGet(GIT_BASE .. key .. ".luau")
 		local fn, err = loadstring(source, "@" .. key)
 		if not fn then
 			loading[key] = nil
@@ -45,7 +45,7 @@ if not RunService:IsStudio() then
 
 		local newDir = key:match("^(.*)/[^/]*$") or ""
 		local env = setmetatable({
-			require = function(p)
+			gitRequire = function(p)
 				return gitRequire(p, newDir)
 			end,
 		}, { __index = getfenv() })
@@ -58,6 +58,5 @@ if not RunService:IsStudio() then
 	end
 end
 
-print("STARTING NTE PANEL!!!!")
-local NTE = require("./NTE")
+local NTE = gitRequire("./NTE")
 NTE.start()
