@@ -8,6 +8,7 @@ if not RunService:IsStudio() then
 	local loading = {}
 	
 	local function fetch(url)
+		print("FETCHING URL: ".. url)
 		return game:HttpGet(url)
 	end
 
