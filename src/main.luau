@@ -51,7 +51,7 @@ if not RunService:IsStudio() then
 		end
 		loading[key] = true
 		
-		local finalPath = GIT_BASE .. key .. ".luau"
+		local finalPath = GIT_BASE .. key .. ".luau?t=" .. os.time()
 		print("REQUIRING LUAU OF PATH: "..finalPath)
 
 		local source = fetch(finalPath)
