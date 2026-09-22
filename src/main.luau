@@ -65,7 +65,7 @@ if not RunService:IsStudio() then
 	requireFunc = function(path)
 		local dir = ""
 		local caller = (debug.info(2, "s") or ""):gsub("^[@=]", "")
-		
+
 		if gitKnown[caller] then
 			dir = caller:match("^(.*)/[^/]*$") or ""
 		end
@@ -93,11 +93,11 @@ if not RunService:IsStudio() then
 		if gitCache[key] ~= nil then
 			return gitCache[key]
 		end
-		
+
 		if gitLoading[key] then
 			error("Dépendance circulaire sur '" .. key .. "'")
 		end
-		
+
 		gitLoading[key] = true
 
 		local sha = fetchGitSha()
@@ -105,18 +105,17 @@ if not RunService:IsStudio() then
 
 		local source = fetchRaw(sha, finalPath)
 		local content, err = loadstring(source, "@" .. key)
-		
+
 		if not content then
 			gitLoading[key] = nil
 			error("Compilation de " .. key .. " : " .. tostring(err))
 		end
-		
-		local callerEnv = getfenv(2)
-		local newDir = (callerEnv and callerEnv.directory) or ""
+
+		local newDir = key:match("^(.*)/[^/]*$") or ""
 		gitEnv(content, newDir)
 
 		gitKnown[key] = true
-		
+
 		local result = content()
 		gitCache[key] = result
 		gitLoading[key] = nil
