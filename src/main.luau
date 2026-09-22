@@ -1,5 +1,6 @@
 local RunService = game:GetService("RunService")
 local HttpService = game:GetService("HttpService")
+
 local GIT_USER = "Mathchop"
 local GIT_REPO = "NTE-Panel"
 local GIT_BRANCH = "test"
@@ -63,7 +64,8 @@ if not RunService:IsStudio() then
 	print("NOT STUDIO")
 
 	requireFunc = function(path)
-		local dir = ""
+		local callerEnv = getfenv(2)
+		local dir = (callerEnv and callerEnv.directory) or ""
 		local caller = (debug.info(2, "s") or ""):gsub("^[@=]", "")
 
 		if gitKnown[caller] then
@@ -111,7 +113,7 @@ if not RunService:IsStudio() then
 			error("Compilation de " .. key .. " : " .. tostring(err))
 		end
 
-		local newDir = key:match("^(.*)/[^/]*$") or ""
+		local newDir = (key:match("^(.*)/[^/]*$") or "")
 		gitEnv(content, newDir)
 
 		gitKnown[key] = true
@@ -119,6 +121,7 @@ if not RunService:IsStudio() then
 		local result = content()
 		gitCache[key] = result
 		gitLoading[key] = nil
+		
 		return result
 	end
 	
