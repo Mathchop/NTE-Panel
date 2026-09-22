@@ -77,7 +77,7 @@ local function getNpcsKillable()
 		if child:IsA("Model") and table.find(NPCS_NAMES, child.Name) then
 			local humanoid: Humanoid = child:FindFirstChild("Humanoid")
 
-			if humanoid.Health == 0 then
+			if humanoid and humanoid.Health == 0 then
 				destroyHighlight(child)
 
 				continue
