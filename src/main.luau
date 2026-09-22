@@ -82,7 +82,7 @@ if not RunService:IsStudio() then
 		for seg in path:gmatch("[^/]+") do
 			if seg == ".." then
 				if #parts == 0 then
-					error("Le chemin '" .. path .. "' sort de la racine du dépôt", 2)
+					error("11Le chemin '" .. path .. "' sort de la racine du dépôt", 2)
 				end
 				table.remove(parts)
 			elseif seg ~= "." then
