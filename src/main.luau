@@ -1,25 +1,72 @@
 local RunService = game:GetService("RunService")
-local SOURCE_BASE = "https://raw.githubusercontent.com/Mathchop/NTE-Panel/refs/heads/test/src/"
+local HttpService = game:GetService("HttpService")
+local GIT_USER = "Mathchop"
+local GIT_REPO = "NTE-Panel"
+local GIT_BRANCH = "test"
+
+local gitCache = {}
+local gitLoading = {}
+local gitKnown = {}
+
+local gitShaCache = nil
+
+local requireFunc: () -> ()
+
+local function gitEnv(target: number | string, dir: string?)
+	local env = setmetatable({
+		gitRequire = RunService:IsStudio() and require or requireFunc,
+		directory = dir or ""
+	}, {__index = getfenv()})
+
+	setfenv(target, env)
+end
+
+local function getGitRawUrl(sha: string?, path: string)
+	return ("https://raw.githubusercontent.com/%s/%s/%s/%s"):format(GIT_USER, GIT_REPO, sha or GIT_BRANCH, path)
+end
+
+local function fetchGitSha()
+	if gitShaCache then
+		return gitShaCache
+	end
+	
+	local url = ("https://api.github.com/repos/%s/%s/commits/%s"):format(GIT_USER, GIT_REPO, GIT_BRANCH)
+	print("FETCHING GIT SHA: ".. url)
+
+	local response = request({
+		Url = url,
+		Method = "GET",
+		Headers = {
+			["User-Agent"] = "NTE-Panel",
+			["Accept"] = "application/vnd.github+json",
+		},
+	})
+
+	if response and response.Body then
+		local data = HttpService:JSONDecode(response.Body)
+
+		print("GOT SHA!: "..data.sha)
+		
+		gitShaCache = data.sha
+		return data.sha
+	end
+end
+
+local function fetchRaw(sha: string?, path: string)
+	local url = getGitRawUrl(sha, path)
+	print("FETCHING GIT RAW: "..url)
+
+	return game:HttpGet(url)
+end
 
 if not RunService:IsStudio() then
 	print("NOT STUDIO")
-	
-	local cache = {}
-	local loading = {}
-	
-	local function fetch(url)
-		print("FETCHING URL: ".. url)
-		return game:HttpGet(url)
-	end
 
-	local cache = {}
-	local loading = {}
-	local known = {}
-
-	local function gitRequire(path)
+	requireFunc = function(path)
 		local dir = ""
 		local caller = (debug.info(2, "s") or ""):gsub("^[@=]", "")
-		if known[caller] then
+		
+		if gitKnown[caller] then
 			dir = caller:match("^(.*)/[^/]*$") or ""
 		end
 
@@ -43,37 +90,46 @@ if not RunService:IsStudio() then
 
 		local key = (table.concat(parts, "/"):gsub("%.luau$", ""))
 
-		if cache[key] ~= nil then
-			return cache[key]
+		if gitCache[key] ~= nil then
+			return gitCache[key]
 		end
-		if loading[key] then
+		
+		if gitLoading[key] then
 			error("Dépendance circulaire sur '" .. key .. "'")
 		end
-		loading[key] = true
 		
-		local finalPath = SOURCE_BASE .. key .. ".luau?t=" .. os.time()
-		print("REQUIRING LUAU OF PATH: "..finalPath)
+		gitLoading[key] = true
 
-		local source = fetch(finalPath)
-		local fn, err = loadstring(source, "@" .. key)
-		if not fn then
-			loading[key] = nil
+		local sha = fetchGitSha()
+		local finalPath = "src/".. key ..".luau"
+
+		local source = fetchRaw(sha, finalPath)
+		local content, err = loadstring(source, "@" .. key)
+		
+		if not content then
+			gitLoading[key] = nil
 			error("Compilation de " .. key .. " : " .. tostring(err))
 		end
+		
+		local callerEnv = getfenv(2)
+		local newDir = (callerEnv and callerEnv.directory) or ""
+		gitEnv(content, newDir)
 
-		known[key] = true
-		local result = fn()
-		cache[key] = result
-		loading[key] = nil
+		gitKnown[key] = true
+		
+		local result = content()
+		gitCache[key] = result
+		gitLoading[key] = nil
 		return result
 	end
-
-	_G.gitRequire = gitRequire
+	
+	_G.gitRequire = requireFunc
 else
 	_G.gitRequire = require
 end
 
-print(_G)
+gitEnv(1)
+
 print("STARTING NTE")
 local NTE = _G.gitRequire("./NTE")
 NTE.start()
