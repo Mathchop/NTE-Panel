@@ -1,5 +1,5 @@
-local NTEConfig = {}
+local Config = {}
 
-NTEConfig.HacksEnabled = false
+Config.HacksEnabled = false
 
-return NTEConfig
+return Config
