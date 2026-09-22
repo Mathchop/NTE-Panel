@@ -132,6 +132,8 @@ function NpcAutoKill.loop()
 		
 		if humanoid.Health ~= 0 and os.time() - teleportedTime < NPC_KILL_TIMEOUT then
 			humanoid:ChangeState(Enum.HumanoidStateType.Dead)
+			
+			return
 		end
 		
 		table.insert(NpcAutoKill._blackList, teleportedNpc)
@@ -139,6 +141,8 @@ function NpcAutoKill.loop()
 		
 		teleportedNpc = nil
 		teleportedTime = nil
+		
+		Utils.teleportPlayer(CFrame.new(0, 0, 0))
 		
 		cooldownTime = os.clock()
 	else
