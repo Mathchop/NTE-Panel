@@ -16,7 +16,8 @@ local NPCS_NAMES = {
 	"Reanimated Ninja",
 	--BOSSES
 	"Monashiki",
-	"Gimshiki"
+	"Gimshiki",
+	"Jigan"
 }
 
 local HIGHLIGHT_FILLCOLORS = {
