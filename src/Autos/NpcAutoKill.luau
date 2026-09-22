@@ -76,8 +76,12 @@ local function getNpcsKillable()
 	for _, child in pairs(workspaceChildren) do
 		if child:IsA("Model") and table.find(NPCS_NAMES, child.Name) then
 			local humanoid: Humanoid = child:FindFirstChild("Humanoid")
-
-			if humanoid and humanoid.Health == 0 then
+			
+			if not humanoid then
+				continue
+			end
+			
+			if humanoid.Health == 0 then
 				destroyHighlight(child)
 
 				continue
